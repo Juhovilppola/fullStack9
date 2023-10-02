@@ -1,7 +1,7 @@
 import express from 'express';
 import { calculateBmi } from './bmiCalculator';
 
-import { calculateExercises, ResultObject } from './exerciseCalculator';
+import { calculateExercises} from './exerciseCalculator';
 const app = express();
 app.use(express.json());
 app.get('/hello', (_req, res) => {
@@ -41,8 +41,8 @@ app.post('/exercises', (req, res) => {
     return;
   }
   try {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-  const result = calculateExercises(daily_exercises, Number(target)) as ResultObject;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument
+  const result = calculateExercises(daily_exercises, Number(target)) ;
   res.send(result);
   } catch (error) {
     
