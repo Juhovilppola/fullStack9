@@ -1,12 +1,12 @@
 import patients from '../../data/patients';
-import {NewPatientEntry, PatientEntry, patient} from '../types';
+import {NewPatientEntry, NonSensitivePatient, PatientEntry, patient} from '../types';
 import { v1 as uuid } from 'uuid';
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
 
-const getPatients = ():patient[] => {
+const getPatients = ():NonSensitivePatient[] => {
   return patients.map(({id, name, dateOfBirth, gender, occupation}) => ({
     id,
     name,
@@ -15,6 +15,10 @@ const getPatients = ():patient[] => {
     occupation
   }));
 }; 
+
+const getPatient =(id: string): patient | undefined => {
+  return patients.find(patient => patient.id === id);
+};
 
 const addPatient = ( entry: NewPatientEntry ): PatientEntry => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
@@ -33,6 +37,7 @@ const addPatient = ( entry: NewPatientEntry ): PatientEntry => {
 
 export default {
   getPatients,
-  addPatient
+  addPatient,
+  getPatient
 };
 

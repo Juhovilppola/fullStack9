@@ -1,17 +1,18 @@
-import { NewPatientEntry, Gender } from "./types";
+import { NewPatientEntry, Gender, Entry } from "./types";
 
 const toNewPatientEntry = (object: unknown): NewPatientEntry => {
   if(!object || typeof object !== 'object') {
     throw new Error('Incorrect or missing data');
   }
   if('name' in object && 'dateOfBirth' in object && 'gender' in object && 'ssn' in object 
-  && 'occupation' in object) {
+  && 'occupation' in object && 'entries' in object) {
     const newEntry: NewPatientEntry = {
       name: parseName(object.name),
       dateOfBirth: parseDate(object.dateOfBirth),
       gender: parseGender(object.gender),
       ssn: parseSsn(object.ssn),
-      occupation: parseOccupation(object.occupation)
+      occupation: parseOccupation(object.occupation),
+      entries: parseEntries(object.entries)
     };
     return newEntry;
   }
@@ -34,6 +35,22 @@ const parseName = (name: unknown): string => {
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
 };
+
+const isEntry = (entry: Entry): boolean => {
+  if(!entry.type) {
+    throw new Error ('missing entry type');
+  }
+
+  if(entry.type === 'HealthCheck') {
+    return true;
+  } else if (entry.type === 'Hospital') {
+    return true;
+  } else if (entry.type ==='OccupationalHealthcare'){
+    return true;
+  } else {
+    throw new Error ('Incorrect entry type');
+  }
+} ;
 
 const parseDate = (date: unknown): string => {
   if (!date || !isString(date) || !isDate(date)) {
@@ -67,6 +84,18 @@ const parseOccupation = (occupation: unknown): string => {
   }
 
   return occupation;
+};
+const parseEntries = (entries: unknown): Entry[] =>{
+  if(!entries || !Array.isArray(entries)){
+    throw new Error('Incorrect or missing entries');
+  } else {
+    entries.forEach((entry)=> {
+    if(!isEntry(entry as Entry)){
+      throw new Error ('Incorrect or missing entry type');
+    } 
+  });
+  }
+  return entries as Entry[];
 };
 
 export default toNewPatientEntry;
