@@ -1,5 +1,5 @@
 import patients from '../../data/patients';
-import {NewPatientEntry, NonSensitivePatient, PatientEntry, patient} from '../types';
+import {Entry,EntryWithoutId, NewPatientEntry, NonSensitivePatient, PatientEntry, patient} from '../types';
 import { v1 as uuid } from 'uuid';
 
 const isString = (text: unknown): text is string => {
@@ -30,14 +30,36 @@ const addPatient = ( entry: NewPatientEntry ): PatientEntry => {
     id: id,
     ...entry
   };
-
+  console.log('adding patient');
+  console.log(newPatientEntry);
   patients.push(newPatientEntry);
   return newPatientEntry;
+};
+const addEntryToPatient = (entry: EntryWithoutId, patientId: string): Entry => {
+  const id = uuid();
+  if(!id || !isString(id)) {
+    throw new Error ('faild to generate id');
+  }
+
+  const patient = patients.find((patient) => patient.id === patientId);
+  const newEntry = {
+    id: id,
+    ...entry
+  };
+  if(patient) {
+  patient?.entries.push(newEntry);
+  } else {
+    throw new Error ('patient not found');
+  }
+
+  return newEntry;
+
 };
 
 export default {
   getPatients,
   addPatient,
-  getPatient
+  getPatient,
+  addEntryToPatient
 };
 

@@ -115,6 +115,11 @@ const data: PatientEntry[] = [
   },
 ];
 
+export const addPatient = (patient: PatientEntry) => {
+  const object = toNewPatientEntry(patient) as PatientEntry;
+  data.push(object);
+};
+
 
 const patientEntries: PatientEntry [] = data.map(obj => {
   const object = toNewPatientEntry(obj) as PatientEntry;
