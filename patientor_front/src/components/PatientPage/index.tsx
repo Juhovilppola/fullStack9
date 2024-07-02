@@ -189,6 +189,7 @@ const OccupationalEntryD: React.FC <{ entry: OccupationalHealthcareEntry}>  = ({
   
    <div>
       <b>Occupational Healthcare</b>
+      <p></p>
       <b>Employer: </b>{entry.employerName} 
       <div>
       {entry.sickLeave && <p>Sick leave start date: {entry.sickLeave?.startDate} </p>}
@@ -224,6 +225,7 @@ const OccupationalEntryD: React.FC <{ entry: OccupationalHealthcareEntry}>  = ({
         onSubmit={submitNewEntry}
         error={error}
         onClose={closeModal}
+        diagnoses={diagnoses}
       />
       <Button variant="contained" onClick={() => openModal()}>
         Add New Entry
